@@ -1,45 +1,78 @@
 'use strict';
 
-let money = +prompt('Your monthly income?', '90000');
+const isNumber = function (n) {
+  return !isNaN(parseFloat(n)) && isFinite(n);
+};
+
+let money;
 let income = 'Additional income';
 let addExpenses = prompt('List the possible expenses for the calculated period separated by commas', 'Internet, Games, Trainings');
 let arrAddExpenses = addExpenses.toLowerCase().split(',');
 let deposit = confirm('Do you have a bank deposit?');
 let mission = 3500000;
 let period = 12;
-let expenses1 = prompt('Enter the required expense item', 'Rent payment');
+let expenses = [];
+/*let expenses1 = prompt('Enter the required expense item', 'Rent payment');
 let amount1 = +prompt('How much will it cost?','10000');
 let expenses2 = prompt('Enter the required expense item', 'Car');
-let amount2 = +prompt('How much will it cost?', '7500');
+let amount2 = +prompt('How much will it cost?', '7500');*/
+let accumulatedMonth;
+let budgetDay;
+let missionMonth;
+
+const start = function () {
+
+  do {
+    money = prompt('Your monthly income?', '90000');
+  }
+  while (!isNumber(money));
+
+};
+
+start();
 
 const showTypeOf = function (data) {
   console.log(data, typeof(data));
 };
 showTypeOf(deposit);
 
-let sumExpenses = 0;
-const getExpensesMonth = function (a, b) {
-  return sumExpenses = a + b;
-};
-console.log(getExpensesMonth(amount1, amount2));
-console.log(addExpenses);
+const getExpensesMonth = function () {
+  let sum = 0;
 
-let accumulatedMonth = 0;
+  for (let i = 0; i < 2; i++) {
+    expenses[i] = prompt('Enter the required expense item');
+
+    sum += +prompt('How much will it cost?');
+
+    while (!isNumber(sum)) {
+      sum = prompt('How much will it cost?');
+    }
+
+  }
+  console.log(expenses);
+  console.log(sum)
+  return sum;
+};
+
+let expensesAmount = getExpensesMonth();
+
+accumulatedMonth = 0;
 const getAccumulatedMonth = function (a, b) {
   return accumulatedMonth = a - b;
-
 };
-getAccumulatedMonth(money, sumExpenses);
+getAccumulatedMonth(money, expensesAmount);
 
-let budgetDay = Math.floor(accumulatedMonth / 30);
-console.log(budgetDay);
+budgetDay = Math.floor(accumulatedMonth / 30);
 
 const getTargetMonth = function (a, b) {
-  return Math.ceil(mission / accumulatedMonth);
+  if (Math.ceil(mission / accumulatedMonth) < 0) {
+    return console.log("Target not achieved");
+  } else {
+    return Math.ceil(mission / accumulatedMonth);
+  }
 };
-console.log(getTargetMonth(mission, accumulatedMonth));
 
-let missionMonth = Math.ceil(mission / accumulatedMonth);
+missionMonth = Math.ceil(mission / accumulatedMonth);
 
 const getStatusIncome = function () {
   if (budgetDay >= 1200) {
@@ -53,3 +86,8 @@ const getStatusIncome = function () {
   }
 };
 getStatusIncome();
+
+console.log(expensesAmount);
+console.log(addExpenses);
+console.log(budgetDay);
+console.log(getTargetMonth(mission, accumulatedMonth));
