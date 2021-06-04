@@ -12,10 +12,6 @@ let deposit = confirm('Do you have a bank deposit?');
 let mission = 3500000;
 let period = 12;
 let expenses = [];
-/*let expenses1 = prompt('Enter the required expense item', 'Rent payment');
-let amount1 = +prompt('How much will it cost?','10000');
-let expenses2 = prompt('Enter the required expense item', 'Car');
-let amount2 = +prompt('How much will it cost?', '7500');*/
 let accumulatedMonth;
 let budgetDay;
 let missionMonth;
@@ -65,14 +61,13 @@ getAccumulatedMonth(money, expensesAmount);
 budgetDay = Math.floor(accumulatedMonth / 30);
 
 const getTargetMonth = function (a, b) {
-  if (Math.ceil(mission / accumulatedMonth) < 0) {
-    return console.log("Target not achieved");
+  if ((Math.ceil(a / b)) < 0) {
+    return ("Target not achieved");
   } else {
-    return Math.ceil(mission / accumulatedMonth);
+    return ("Target has been achieved: " + Math.ceil(a / b));
   }
 };
-
-missionMonth = Math.ceil(mission / accumulatedMonth);
+console.log(getTargetMonth(mission, accumulatedMonth));
 
 const getStatusIncome = function () {
   if (budgetDay >= 1200) {
@@ -90,4 +85,3 @@ getStatusIncome();
 console.log(expensesAmount);
 console.log(addExpenses);
 console.log(budgetDay);
-console.log(getTargetMonth(mission, accumulatedMonth));
