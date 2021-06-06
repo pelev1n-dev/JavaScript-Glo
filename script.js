@@ -5,83 +5,79 @@ const isNumber = function (n) {
 };
 
 let money;
-let income = 'Additional income';
-let addExpenses = prompt('List the possible expenses for the calculated period separated by commas', 'Internet, Games, Trainings');
-let arrAddExpenses = addExpenses.toLowerCase().split(',');
-let deposit = confirm('Do you have a bank deposit?');
-let mission = 3500000;
-let period = 12;
-let expenses = [];
-let accumulatedMonth;
-let budgetDay;
-let missionMonth;
-
 const start = function () {
-
   do {
     money = prompt('Your monthly income?', '90000');
   }
   while (!isNumber(money));
-
 };
-
 start();
 
-const showTypeOf = function (data) {
-  console.log(data, typeof(data));
-};
-showTypeOf(deposit);
-
-const getExpensesMonth = function () {
-  let sum = 0;
-
-  for (let i = 0; i < 2; i++) {
-    expenses[i] = prompt('Enter the required expense item');
-
-    sum += +prompt('How much will it cost?');
-
-    while (!isNumber(sum)) {
-      sum = prompt('How much will it cost?');
+let appData = {
+  income: {},
+  addIncome: [],
+  expenses: {},
+  addExpenses: [],
+  deposit: false,
+  mission: 3500000,
+  period: 12,
+  budget: money,
+  budgetDay: 0,
+  budgetMonth: 0,
+  expensesMonth: 0,
+  asking: function (){
+    let expensesAmount = 0;
+    let expensesName = '';
+    let addExpenses = prompt('List the possible expenses for the calculated period separated by commas', 'Internet, Games, Trainings');
+    appData.addExpenses = addExpenses.toLowerCase().split(',');
+    appData.deposit = confirm('Do you have a bank deposit?');
+    for (let i = 0; i < 2; i++) {
+      expensesName = prompt('Enter the required expense item');
+      do {
+        expensesAmount = +prompt(`How much will it cost?`);
+      } while (!isNumber(expensesAmount));
+      appData.expenses[expensesName] = expensesAmount;
     }
-
-  }
-  console.log(expenses);
-  console.log(sum)
-  return sum;
-};
-
-let expensesAmount = getExpensesMonth();
-
-accumulatedMonth = 0;
-const getAccumulatedMonth = function (a, b) {
-  return accumulatedMonth = a - b;
-};
-getAccumulatedMonth(money, expensesAmount);
-
-budgetDay = Math.floor(accumulatedMonth / 30);
-
-const getTargetMonth = function (a, b) {
-  if ((Math.ceil(a / b)) < 0) {
-    return ("Target not achieved");
-  } else {
-    return ("Target has been achieved: " + Math.ceil(a / b));
-  }
-};
-console.log(getTargetMonth(mission, accumulatedMonth));
-
-const getStatusIncome = function () {
-  if (budgetDay >= 1200) {
-    console.log('You have a high level of income');
-  } else if (budgetDay >= 600 && budgetDay < 1200 ) {
-    console.log('You have an average income level');
-  } else if (budgetDay >= 0 && budgetDay < 600) {
-    console.log('Unfortunately you have a lower than average income');
-  } else {
-    console.log('Something went wrong');
+  },
+  getExpensesMonth: function () {
+    for (let i in appData.expenses) {
+      appData.expensesMonth += appData.expenses[i];
+    }
+  },
+  getBudget: function () {
+    appData.budgetMonth = Math.floor(appData.budget - appData.expensesMonth);
+    appData.budgetDay = Math.floor(appData.budgetMonth / 30);
+  },
+  getTargetMonth: function (a, b) {
+    if ((Math.ceil(a / b)) < 0) {
+      return ("Target not achieved");
+    } else {
+      return ("Target has been achieved: " + Math.ceil(a / b));
+    }
+  },
+  getStatusIncome: function () {
+    if (appData.budgetDay >= 1200) {
+      console.log('You have a high level of income');
+    } else if (appData.budgetDay >= 600 && appData.budgetDay < 1200 ) {
+      console.log('You have an average income level');
+    } else if (appData.budgetDay >= 0 && appData.budgetDay < 600) {
+      console.log('Unfortunately you have a lower than average income');
+    } else {
+      console.log('Something went wrong');
+    }
   }
 };
-getStatusIncome();
 
-console.log(expensesAmount);
-console.log(addExpenses);
-console.log(budgetDay);
+appData.asking();
+appData.getExpensesMonth();
+appData.getBudget();
+appData.getTargetMonth();
+appData.getStatusIncome();
+
+console.log('Monthly expenses: ' + appData.expensesMonth);
+console.log(appData.getTargetMonth(appData.mission, appData.budgetMonth));
+
+console.log('Наша программа включает в себя данные: ');
+for (let i in appData) {
+  console.log(i, appData[i]);
+}
